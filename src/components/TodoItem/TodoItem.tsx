@@ -23,12 +23,15 @@ const TodoItem: FC<TodoItemProps> = ({ todo }) => {
 
   return (
     <>
-      <div className={s.wrapper}>
+      <div className={classNames(s.wrapper, completed && s.wrapper__completed)}>
         <span>{title}</span>
         <div className={s.buttons}>
-          <button type="button" className={classNames(s.button)}>
-            Изменить
-          </button>
+          {!completed && (
+            <button type="button" className={classNames(s.button)}>
+              Изменить
+            </button>
+          )}
+
           <button
             type="button"
             className={classNames(

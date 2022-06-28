@@ -1,5 +1,16 @@
 .wrapper {
   @apply flex flex-col items-center justify-between gap-2 rounded-lg border  p-3 md:flex-row;
+
+  span {
+    @apply block grow text-xl;
+  }
+
+  &__completed {
+    @apply bg-gray-200;
+    span {
+      @apply text-gray-400 line-through;
+    }
+  }
 }
 
 .buttons {
