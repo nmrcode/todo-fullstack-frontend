@@ -40,5 +40,14 @@ export const todoAPI = createApi({
       }),
       invalidatesTags: ["Todos"],
     }),
+
+    changeTodoTitle: build.mutation({
+      query: ({ todo, editedTodoText }) => ({
+        url: `todos/${todo.id}`,
+        method: "PATCH",
+        body: { title: editedTodoText },
+      }),
+      invalidatesTags: ["Todos"],
+    }),
   }),
 });

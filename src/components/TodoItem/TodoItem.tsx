@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import s from "./TodoItem.module.scss";
 import classNames from "classnames";
 import { ITodo } from "../../types/ITodo";
@@ -10,8 +10,11 @@ interface TodoItemProps {
 
 const TodoItem: FC<TodoItemProps> = ({ todo }) => {
   const { id, completed, title } = todo;
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editedTodoText, setEditedTodoText] = useState(title);
   const [deleteTodo] = todoAPI.useDeleteTodoMutation();
   const [toggleTodo] = todoAPI.useToggleTodoMutation();
+  const [changeTodoTitle] = todoAPI.useChangeTodoTitleMutation();
 
   const handleDelete = async (id: string) => {
     await deleteTodo(id);
@@ -21,14 +24,34 @@ const TodoItem: FC<TodoItemProps> = ({ todo }) => {
     await toggleTodo(todo);
   };
 
+  const handleOnToggleEditing = async (todo: any) => {
+    setIsEditing((prevState) => !prevState);
+    if (editedTodoText !== title) {
+      changeTodoTitle({ todo, editedTodoText });
+    }
+  };
+
   return (
     <>
       <div className={classNames(s.wrapper, completed && s.wrapper__completed)}>
-        <span>{title}</span>
+        {!isEditing ? (
+          <span>{title}</span>
+        ) : (
+          <input
+            type="text"
+            className="w-full border-b"
+            value={editedTodoText}
+            onChange={(e) => setEditedTodoText(e.target.value)}
+          />
+        )}
         <div className={s.buttons}>
           {!completed && (
-            <button type="button" className={classNames(s.button)}>
-              Изменить
+            <button
+              type="button"
+              className={classNames(s.button)}
+              onClick={() => handleOnToggleEditing(todo)}
+            >
+              {isEditing ? "Сохранить" : "Изменить"}
             </button>
           )}
 
