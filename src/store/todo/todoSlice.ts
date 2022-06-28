@@ -1,25 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
-
-interface ITodo {
-  id: string;
-  title: string;
-  completed: boolean;
-}
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ITodoState {
-  list: ITodo[];
+  todoInputText: string;
 }
 
 const initialState: ITodoState = {
-  list: [],
+  todoInputText: "",
 };
 
 const todoSlice = createSlice({
   name: "todos",
   initialState,
-  reducers: {},
+  reducers: {
+    setTodoInputText(state, action: PayloadAction<string>) {
+      state.todoInputText = action.payload;
+    },
+  },
 });
 
-export const {} = todoSlice.actions;
+export const { setTodoInputText } = todoSlice.actions;
 
 export default todoSlice;

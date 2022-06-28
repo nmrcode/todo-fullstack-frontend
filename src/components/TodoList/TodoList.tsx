@@ -1,20 +1,19 @@
 import { FC } from "react";
 import TodoItem from "../TodoItem/TodoItem";
-import { TransitionGroup } from "react-transition-group";
+import { todoAPI } from "../../services/todo.service";
+import { ITodo } from "../../types/ITodo";
 
-const TodoList: FC = () => {
+const TodoList: FC<any> = ({ data, isError }) => {
+  if (isError) return <h1>Что-то не так с сервером</h1>;
+
   return (
-    <TransitionGroup component="ul" className="flex flex-col gap-3">
-      <li>
-        <TodoItem />
-      </li>
-      <li>
-        <TodoItem />
-      </li>
-      <li>
-        <TodoItem />
-      </li>
-    </TransitionGroup>
+    <ul className="flex flex-col gap-2">
+      {data.map((todo: ITodo) => (
+        <li key={todo.id}>
+          <TodoItem todo={todo} />
+        </li>
+      ))}
+    </ul>
   );
 };
 
